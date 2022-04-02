@@ -3,9 +3,9 @@ import { Test } from '@nestjs/testing';
 import * as pactum from 'pactum';
 import { AppModule } from '../src/app.module';
 import { AuthDto } from '../src/auth/dto';
-// import { CreateBookmarkDto, EditBookmarkDto } from '../src/bookmark/dto';
+import { CreateBookmarkDto, EditBookmarkDto } from '../src/bookmark/dto';
 import { PrismaService } from '../src/prisma/prisma.service';
-// import { EditUserDto } from '../src/user/dto';
+import { EditUserDto } from '../src/user/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -116,24 +116,24 @@ describe('App e2e', () => {
       });
     });
 
-    // describe('Edit user', () => {
-    //   it('should edit user', () => {
-    //     const dto: EditUserDto = {
-    //       firstName: 'Vladimir',
-    //       email: 'vlad@codewithvlad.com',
-    //     };
-    //     return pactum
-    //       .spec()
-    //       .patch('/users')
-    //       .withHeaders({
-    //         Authorization: 'Bearer $S{userAt}',
-    //       })
-    //       .withBody(dto)
-    //       .expectStatus(200)
-    //       .expectBodyContains(dto.firstName)
-    //       .expectBodyContains(dto.email);
-    //   });
-    // });
+    describe('Edit user', () => {
+      it('should edit user', () => {
+        const dto: EditUserDto = {
+          firstName: 'hello',
+          email: 'hello@world.com',
+        };
+        return pactum
+          .spec()
+          .patch('/users')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.firstName)
+          .expectBodyContains(dto.email);
+      });
+    });
   });
 
   describe('Bookmarks', () => {
@@ -150,23 +150,23 @@ describe('App e2e', () => {
       });
     });
 
-    // describe('Create bookmark', () => {
-    //   const dto: CreateBookmarkDto = {
-    //     title: 'First Bookmark',
-    //     link: 'https://www.youtube.com/watch?v=d6WC5n9G_sM',
-    //   };
-    //   it('should create bookmark', () => {
-    //     return pactum
-    //       .spec()
-    //       .post('/bookmarks')
-    //       .withHeaders({
-    //         Authorization: 'Bearer $S{userAt}',
-    //       })
-    //       .withBody(dto)
-    //       .expectStatus(201)
-    //       .stores('bookmarkId', 'id');
-    //   });
-    // });
+    describe('Create bookmark', () => {
+      const dto: CreateBookmarkDto = {
+        title: 'First Bookmark',
+        link: 'https://www.youtube.com/watch?v=d6WC5n9G_sM',
+      };
+      it('should create bookmark', () => {
+        return pactum
+          .spec()
+          .post('/bookmarks')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(dto)
+          .expectStatus(201)
+          .stores('bookmarkId', 'id');
+      });
+    });
 
     describe('Get bookmarks', () => {
       it('should get bookmarks', () => {
@@ -195,27 +195,27 @@ describe('App e2e', () => {
       });
     });
 
-    // describe('Edit bookmark by id', () => {
-    //   const dto: EditBookmarkDto = {
-    //     title:
-    //       'Kubernetes Course - Full Beginners Tutorial (Containerize Your Apps!)',
-    //     description:
-    //       'Learn how to use Kubernetes in this complete course. Kubernetes makes it possible to containerize applications and simplifies app deployment to production.',
-    //   };
-    //   it('should edit bookmark', () => {
-    //     return pactum
-    //       .spec()
-    //       .patch('/bookmarks/{id}')
-    //       .withPathParams('id', '$S{bookmarkId}')
-    //       .withHeaders({
-    //         Authorization: 'Bearer $S{userAt}',
-    //       })
-    //       .withBody(dto)
-    //       .expectStatus(200)
-    //       .expectBodyContains(dto.title)
-    //       .expectBodyContains(dto.description);
-    //   });
-    // });
+    describe('Edit bookmark by id', () => {
+      const dto: EditBookmarkDto = {
+        title:
+          'Kubernetes Course - Full Beginners Tutorial (Containerize Your Apps!)',
+        description:
+          'Learn how to use Kubernetes in this complete course. Kubernetes makes it possible to containerize applications and simplifies app deployment to production.',
+      };
+      it('should edit bookmark', () => {
+        return pactum
+          .spec()
+          .patch('/bookmarks/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.title)
+          .expectBodyContains(dto.description);
+      });
+    });
 
     describe('Delete bookmark by id', () => {
       it('should delete bookmark', () => {
